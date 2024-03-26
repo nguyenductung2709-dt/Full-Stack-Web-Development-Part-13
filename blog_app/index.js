@@ -38,11 +38,34 @@ Blog.init({
     modelName: 'blog',
 }) 
 
+Blog.sync()
 
-app.get('/', async(req,res) => {
+app.get('/api/blogs', async(req,res) => {
     const blogs = await Blog.findAll()
     console.log(blogs)
     res.json(blogs)
+})
+
+app.post('/api/blogs', async(req,res) => {
+    try {
+        const newBlog = await Blog.create(req.body)
+        return res.json(newBlog)
+    }
+    catch (err) {
+        return res.status(400).json({ err })
+    }
+})
+
+app.delete('/api/blogs/:id', async(req,res) => {
+    const blog = await Blog.findByPk(req.params.id)
+    if (blog) {
+      Blog.destroy({
+        id: req.params.id
+      })
+      return res.json(blog)
+    } else {
+      res.status(404).end()
+    }
 })
 
 const PORT = process.env.PORT || 3001
