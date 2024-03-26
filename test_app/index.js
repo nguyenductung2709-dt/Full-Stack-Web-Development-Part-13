@@ -39,9 +39,20 @@ Note.init({
     modelName: 'note',
 })
 
+Note.sync() // create table for notes
+
 app.get('/api/notes', async (req, res) => {
-  const notes = await Note.findAll();
+  const notes = await Note.findAll(); //find all notes in database
   res.json(notes)
+})
+
+app.get('/api/notes/:id', async (req, res) => {
+  const note = await Note.findByPk(req.params.id) //find note by id
+  if (note) {
+    res.json(note)
+  } else {
+    res.status(404).end()
+  }
 })
 
 app.post('/api/notes', async (req, res) => {
@@ -55,6 +66,17 @@ app.post('/api/notes', async (req, res) => {
     } catch(error) {
     return res.status(400).json({ error })
   }  
+})
+
+app.put('/api/notes/:id', async (req, res) => {
+  const note = await Note.findByPk(req.params.id) //find note by id
+  if (note) {
+    note.important = req.body.important
+    await note.save() //save the new note (change important)
+    res.json(note)
+  } else {
+    res.status(404).end()
+  }
 })
 
 const PORT = process.env.PORT || 3001
