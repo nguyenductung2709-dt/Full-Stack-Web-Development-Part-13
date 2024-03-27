@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "migration:down": "node util/rollback.js", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -16,7 +17,8 @@
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.0",
     "pg": "^8.11.3",
-    "sequelize": "^6.37.1"
+    "sequelize": "^6.37.1",
+    "umzug": "^3.7.0"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.3"
