@@ -3,8 +3,13 @@ const router = require('express').Router()
 const { User } = require('../models')
 
 router.get('/', async (req, res) => {
-  const users = await User.findAll()
-  res.json(users)
+
+    const users = await User.findAll({
+      include: {
+        model: Note  // this is used to include Note models correspond to the user
+      }
+    })
+    res.json(users)
 })
 
 router.post('/', async (req, res) => {

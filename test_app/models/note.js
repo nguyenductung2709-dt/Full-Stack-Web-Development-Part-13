@@ -28,3 +28,12 @@ Note.init({
 })
 
 module.exports = Note
+
+/* As we use connection between 2 models, Sequelize will automatically create connection between them,
+else we can do this
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'users', key: 'id' },
+  }
+*/
