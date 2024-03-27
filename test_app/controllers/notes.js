@@ -3,12 +3,27 @@ const router = require('express').Router()
 const { Note } = require('../models')
 
 router.get('/', async (req, res) => {
+  /* another implementation for query
+    let important = {
+      [Op.in]: [true, false]
+    }
+
+    if ( req.query.important ) {
+      important = req.query.important === "true"
+    }
+  */
   const notes = await Note.findAll({
     attributes: { exclude: ['userId'] }, // don't include userId
     include: {
       model: User,
       attributes: ['name'] // include name
       // we can also do this: attributes: { exclude: ['userId'] }
+      /*
+      where: {
+        important: req.query.important === "true" query get by for example http://localhost:3001/api/notes?important=true
+      }
+      but this implementation only works if you have the last query
+       */
     }
   })
   res.json(notes)
