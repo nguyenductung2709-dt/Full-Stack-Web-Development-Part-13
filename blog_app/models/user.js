@@ -23,6 +23,16 @@ User.init({
             }
           }
     },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: new Date()
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: new Date()
+    },
 },  {
     sequelize,
     underscored: true,
