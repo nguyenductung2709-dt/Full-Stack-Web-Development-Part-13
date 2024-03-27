@@ -29,6 +29,10 @@ router.get('/', async (req, res, next) => {
           exclude: ['userId'],
         },
       },
+      order: [
+        ['likes', 'DESC']
+      ]
+      ,
       where
     });
     res.json(blogs);
