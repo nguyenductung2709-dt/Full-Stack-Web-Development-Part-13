@@ -4,8 +4,8 @@ const router = require('express').Router();
 const { SECRET } = require('../util/config');
 const User = require('../models/user');
 
-router.post('/', (req, res) => {
-    const user = User.findOne({ where: { username: req.body.username }})
+router.post('/', async(req, res) => {
+    const user = await User.findOne({ where: { username: req.body.username }})
     const passwordCorrect = req.body.password === 'secret'
     if (!(user && passwordCorrect)) {
         return res.status(401).json({
