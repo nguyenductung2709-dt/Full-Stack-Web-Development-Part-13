@@ -50,7 +50,6 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
-router.use(middleware.unknownEndpoint);
 router.use(middleware.errorHandler);
 
 module.exports = router;

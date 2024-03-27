@@ -15,7 +15,13 @@ User.init({
     },
     username: {
         type: DataTypes.TEXT,
-        allowNull: false
+        unique: true,
+        allowNull: false,
+        validate: {
+            isEmail: {
+              msg: 'Username must be a valid email address'
+            }
+          }
     },
 },  {
     sequelize,
