@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const middleware = require('../util/middleware');
-const { User, Blog } = require('../models');
+const { User, Blog, ReadingList } = require('../models');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -10,6 +10,35 @@ router.get('/', async (req, res, next) => {
       }
     });
     res.json(users);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      attributes: { exclude: [''] },
+      include: [
+        {
+          model: Blog,
+          attributes: { exclude: ['userId'] }
+        },
+        {
+          model: Blog,
+          as: 'readings', // Use a different alias for the second inclusion
+          attributes: { exclude: ['userId'] },
+          through: {
+            attributes: []
+          }
+        }
+      ]
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).end();
+    }
   } catch (err) {
     next(err);
   }
