@@ -24,10 +24,15 @@ router.post('/', async(req, res) => {
         userId: user.id,
       }
     })
-    await Session.create({
-      userId: user.id,
-      token: token,
-    })
+    if (user.disabled == false) {
+      await Session.create({
+        userId: user.id,
+        token: token,
+      })
+    }
+    else {
+      throw Error('This user has been banned');
+    }
     res.status(200).send({ token, username: user.username, name: user.name })
   } catch(err) {
       console.log(err)
