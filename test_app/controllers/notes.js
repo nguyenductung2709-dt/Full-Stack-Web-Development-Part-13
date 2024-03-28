@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { Note } = require('../models')
+const { Note, User } = require('../models')
 
 router.get('/', async (req, res) => {
   /* another implementation for query

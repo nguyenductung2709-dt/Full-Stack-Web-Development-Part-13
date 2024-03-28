@@ -18,7 +18,8 @@ Note.init({
     type: DataTypes.BOOLEAN
   },
   date: {
-    type: DataTypes.DATE
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
   }
 }, {
   sequelize,
