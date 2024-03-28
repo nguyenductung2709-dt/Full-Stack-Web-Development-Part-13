@@ -29,7 +29,7 @@ router.get('/:id', async (req, res, next) => {
           as: 'readings', // Use a different alias for the second inclusion
           attributes: { exclude: ['userId'] },
           through: {
-            attributes: []
+            attributes: { exclude: ['userId', 'blogId', 'createdAt', 'updatedAt'] }
           }
         }
       ]
