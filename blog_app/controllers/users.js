@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const middleware = require('../util/middleware');
 const { User, Blog, ReadingList } = require('../models');
+const { Op } = require('sequelize');
+
 
 router.get('/', async (req, res, next) => {
   try {
@@ -17,6 +19,10 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
+    const where = {}
+    if (req.query.read) {
+      where.readingState = req.query.read
+    }    
     const user = await User.findByPk(req.params.id, {
       attributes: { exclude: [''] },
       include: [
@@ -26,11 +32,13 @@ router.get('/:id', async (req, res, next) => {
         },
         {
           model: Blog,
-          as: 'readings', // Use a different alias for the second inclusion
+          as: 'readings', 
           attributes: { exclude: ['userId'] },
           through: {
-            attributes: { exclude: ['userId', 'blogId', 'createdAt', 'updatedAt'] }
-          }
+            as: 'reading_list_full',
+            attributes: { exclude: ['userId', 'blogId', 'createdAt', 'updatedAt'] },
+            where,
+          },
         }
       ]
     });
