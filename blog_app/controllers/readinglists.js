@@ -11,10 +11,10 @@ router.post('/', async(req, res) => {
     }
 })
 
-router.put('/:id', middleware.tokenExtractor, async (req, res, next) => {
+router.put('/:id', middleware.findUserSession, async (req, res, next) => {
     try {
         const id = req.params.id;
-        const user = await User.findByPk(req.decodedToken.id);
+        const user = req.user;
         if (!user) {
             return res.status(401).json({ error: 'Unauthorized' });
         }

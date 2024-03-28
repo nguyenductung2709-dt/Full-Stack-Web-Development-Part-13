@@ -41,9 +41,9 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', middleware.tokenExtractor, async (req, res, next) => {
+router.post('/', middleware.findUserSession, async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.decodedToken.id)
+    const user = req.user;
     const newBlog = await Blog.create({...req.body, userId: user.id, date: new Date()});
     res.json(newBlog);
   } catch (error) {
@@ -51,10 +51,10 @@ router.post('/', middleware.tokenExtractor, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', middleware.tokenExtractor, async (req, res, next) => {
+router.delete('/:id', middleware.findUserSession, async (req, res, next) => {
   try {
     const blog = await Blog.findByPk(req.params.id);
-    const user = await User.findByPk(req.decodedToken.id)
+    const user = req.user;
     console.log(user);
     console.log(blog);
     if (blog && (blog.userId == user.id)) {
